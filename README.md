@@ -1,2 +1,2 @@
 # Morse-Core
-More Core is a messaging system that enables communication between services within the enterprises systems (multi services)
+Morse Core is a message-oriented middleware that enables the communication between services within any large scale or integration   systems (multi-services). by implementing  the AMQP 
