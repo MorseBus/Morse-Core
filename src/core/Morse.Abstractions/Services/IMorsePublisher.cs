@@ -3,9 +3,9 @@ using Morse.Abstractions.Models;
 
 namespace Morse.Abstractions.Services
 {
-    public interface IMessegPublisher<TMessage>
+    public interface IMorsePublisher<TMessage>
         where TMessage : MorseMessage
     {
-        Task PublishAsync(TMessage message);
+        void Publish(TMessage message);
     }
 }

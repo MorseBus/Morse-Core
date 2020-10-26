@@ -4,9 +4,9 @@ using Morse.Abstractions.Models;
 
 namespace Morse.Abstractions.Services
 {
-    public interface IMessageConsumer<TMessage>
+    public interface IMorseConsumer<TMessage>
         where TMessage : MorseMessage
     {
-        Task StartAsync(CancellationToken cancellationToken);
+        void Start(CancellationToken cancellationToken);
     }
 }
