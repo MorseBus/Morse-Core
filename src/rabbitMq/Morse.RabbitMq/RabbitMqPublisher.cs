@@ -22,7 +22,7 @@ namespace Morse.RabbitMq
             var queueDefinition = queueBuilder.Build(message);
             using var channel = CreateConnection(queueDefinition.Connection);
 
-            channel.ExchangeDeclare(queueDefinition.Connection.Exchange, ExchangeType.Topic, true, false);
+            channel.ExchangeDeclare(queueDefinition.Connection.Exchange, ExchangeType.Topic, durable: true, autoDelete: false);
             channel.QueueDeclare(queueDefinition.Name, durable: true, exclusive: false, autoDelete: false, arguments: null);
             channel.QueueBind(queueDefinition.Name, queueDefinition.Connection.Exchange, queueDefinition.RoutingKey);
 
