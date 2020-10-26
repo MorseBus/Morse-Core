@@ -18,6 +18,7 @@ namespace Morse.RabbitMq
     {
         private readonly IQueueBuilder<TMessage> queueBuilder;
         private readonly IServiceProvider serviceProvider;
+
         public RabbitMqConsumer(
             IQueueBuilder<TMessage> queueBuilder,
             IServiceProvider serviceProvider)
