@@ -1,6 +1,6 @@
 ﻿namespace Morse.Abstractions.Models
 {
-    public class ConnectionProperties
+    public class ConnectionDefinition
     {
         public string Host { get; set; }
         public int Port { get; set; }
