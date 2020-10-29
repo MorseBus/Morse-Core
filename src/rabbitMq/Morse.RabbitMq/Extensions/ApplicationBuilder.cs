@@ -11,7 +11,7 @@ namespace Morse.RabbitMq.Extensions
 {
     public static class ApplicationBuilder
     {
-        public static IApplicationBuilder UseMorseConsumers(this IApplicationBuilder app, params Type[] messageAssemblyMarkerTypes)
+        public static IApplicationBuilder UseMorseRabbitMqConsumers(this IApplicationBuilder app, params Type[] messageAssemblyMarkerTypes)
         {
             return RegisterMessagesClasses(app, messageAssemblyMarkerTypes.Select((Type t) => t.GetTypeInfo().Assembly));
         }
