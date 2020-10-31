@@ -14,9 +14,7 @@ namespace Morse.Core.Services
         {
             this.connectionOptions = options.Value;
 
-            if (connectionOptions == null || 
-                connectionOptions.Connections == null || 
-                !connectionOptions.Connections.ContainsKey(DefaultConnection))
+            if (connectionOptions?.Connections == null || !connectionOptions.Connections.ContainsKey(DefaultConnection))
                 throw new System.Exception("Connections Must contains DefaultConnection at least");
         }
 

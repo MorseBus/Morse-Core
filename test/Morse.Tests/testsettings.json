@@ -1,12 +1,14 @@
 {
   "MorseConnectionOptions": {
-    "DefaultConnection": {
-      "Host": "0.0.0.1",
-      "Port": 5672,
-      "VirtualHost": "/",
-      "Username": "morse",
-      "Password": "morse",
-      "Exchange": "morse.Test"
+    "Connections": {
+      "DefaultConnection": {
+        "Host": "localhost",
+        "Port": 5672,
+        "VirtualHost": "/",
+        "Username": "morse",
+        "Password": "morse",
+        "Exchange": "morse.Test"
+      }
     }
   }
 }

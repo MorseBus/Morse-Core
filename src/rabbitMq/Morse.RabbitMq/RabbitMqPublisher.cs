@@ -6,15 +6,16 @@ using RabbitMQ.Client;
 
 namespace Morse.RabbitMq
 {
-
-    ///TODO: 
-    ///make the serializing and contnet type configurable
-    ///no need to create and bind queus each time (check if the queue already exsists)
-    ///enahnce connection creating
     public class RabbitMqPublisher<TMessage> : IMorsePublisher<TMessage>
         where TMessage : MorseMessage
     {
+
         private readonly IQueueBuilder<TMessage> queueBuilder;
+
+        public RabbitMqPublisher(IQueueBuilder<TMessage> queueBuilder)
+        {
+            this.queueBuilder = queueBuilder;
+        }
 
         public void Publish(TMessage message)
         {
@@ -37,7 +38,7 @@ namespace Morse.RabbitMq
                 Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)));
         }
 
-        private IModel CreateConnection(ConnectionDefinition properties)
+        private static IModel CreateConnection(ConnectionDefinition properties)
         {
             var connection = new ConnectionFactory()
             {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Morse.Abstractions.Services;
@@ -6,7 +8,8 @@ using Morse.RabbitMq.Extensions;
 
 namespace Morse.Tests.RabbitMq
 {
-    public class TestRabbitMqPublisher : TestContainer
+    [TestClass]
+    public class TestRabbitMqQueues : TestContainer
     {
         private IMorsePublisher<MorseTestModel> publisher;
 
@@ -19,15 +22,27 @@ namespace Morse.Tests.RabbitMq
             });
         }
 
+        [TestMethod]
+        public void PublishConfirm()
+        {
+            Assert.IsTrue(ConsumedMessageCollection.Messages.Any());
+        }
+
         protected override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
+            services.AddTransient<IMessageHandler<MorseTestModel>, MorseTestModelHandler>();
+
             services.AddMorseRabbitMqPublisher(Configuration);
+            services.AddMorseRabbitMqConsumers(Configuration);
         }
 
         protected override void ResolveServices()
         {
             base.ResolveServices();
+            var consumer = ServiceProvider.GetService(typeof(IMorseConsumer<>).MakeGenericType(typeof(MorseTestModel)));
+            consumer.GetType().GetMethod("Start")?.Invoke(consumer, new object[1] { new CancellationToken() });
+
             publisher = ServiceProvider.GetService<IMorsePublisher<MorseTestModel>>();
         }
     }
