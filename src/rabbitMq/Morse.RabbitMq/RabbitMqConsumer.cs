@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,40 +28,44 @@ namespace Morse.RabbitMq
             this.serviceProvider = serviceProvider;
         }
 
-        public void Start(CancellationToken cancellationToken)
+        public Task Start(CancellationToken cancellationToken)
         {
             foreach (var queueDefinition in queueBuilder.Build())
             {
-                Task.Run(() =>
-                {
-                    using var channel = CreateConnection(queueDefinition.Connection);
-
-                    channel.ExchangeDeclare(queueDefinition.Connection.Exchange, ExchangeType.Topic, durable: true, autoDelete: false);
-                    channel.QueueDeclare(queueDefinition.Name, durable: true, exclusive: false, autoDelete: false, arguments: null);
-                    channel.QueueBind(queueDefinition.Name, queueDefinition.Connection.Exchange, queueDefinition.RoutingKey);
-                    var consumer = new AsyncEventingBasicConsumer(channel);
-
-                    consumer.Received += Consumer_Received;
-                });
+                Task.Run(() => { InitializeNewConsumer(queueDefinition); }, cancellationToken);
             }
+            return Task.CompletedTask;
         }
 
-        private async Task Consumer_Received(object sender, BasicDeliverEventArgs eventArgs)
+        private void InitializeNewConsumer(QueueDefinition definition)
+        {
+            var channel = CreateConnection(definition.Connection);
+
+            channel.ExchangeDeclare(definition.Connection.Exchange, ExchangeType.Topic, durable: true, autoDelete: false);
+            channel.QueueDeclare(definition.Name, durable: true, exclusive: false, autoDelete: false, arguments: null);
+            channel.QueueBind(definition.Name, definition.Connection.Exchange, definition.RoutingKey);
+            var consumer = new EventingBasicConsumer(channel);
+
+            consumer.Received += Consumer_Received;
+            channel.BasicConsume(definition.Name, false, consumer);
+        }
+
+        private void Consumer_Received(object sender, BasicDeliverEventArgs eventArgs)
         {
             var message = JsonConvert.DeserializeObject<TMessage>(Encoding.UTF8.GetString(eventArgs.Body.ToArray()));
             foreach (var handler in serviceProvider.CreateScope().ServiceProvider.GetServices<IMessageHandler<TMessage>>())
             {
-                await handler.HandleAsync(message);
+                handler.HandleAsync(message).Wait();
             }
             ((EventingBasicConsumer)sender).Model.BasicAck(eventArgs.DeliveryTag, false);
         }
 
-        private IModel CreateConnection(ConnectionDefinition properties)
+        private static IModel CreateConnection(ConnectionDefinition properties)
         {
             var connection = new ConnectionFactory()
             {
                 HostName = properties.Host,
-                VirtualHost = properties.Host,
+                VirtualHost = properties.VirtualHost,
                 Port = properties.Port,
                 UserName = properties.Username,
                 Password = properties.Password

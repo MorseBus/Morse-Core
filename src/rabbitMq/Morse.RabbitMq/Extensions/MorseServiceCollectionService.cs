@@ -15,6 +15,7 @@ namespace Morse.RabbitMq.Extensions
 
         public static IServiceCollection AddMorseRabbitMqConsumers(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddSingleton(typeof(IMorseConsumer<>), typeof(RabbitMqConsumer<>));
             return ConfigureRabbitMqServices(services, configuration);
         }
 

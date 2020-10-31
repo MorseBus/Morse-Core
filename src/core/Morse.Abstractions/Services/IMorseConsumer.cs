@@ -7,6 +7,6 @@ namespace Morse.Abstractions.Services
     public interface IMorseConsumer<TMessage>
         where TMessage : MorseMessage
     {
-        void Start(CancellationToken cancellationToken);
+        Task Start(CancellationToken cancellationToken);
     }
 }
