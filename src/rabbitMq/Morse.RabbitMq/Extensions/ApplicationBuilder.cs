@@ -21,7 +21,7 @@ namespace Morse.RabbitMq.Extensions
         {
             var messageTypes = assembliesToScan
                 .SelectMany(a => a.GetExportedTypes())
-                .Where(type => !type.IsAbstract && typeof(MorseMessage).IsAssignableFrom(type));
+                .Where(type => !type.IsAbstract && typeof(IMorseMessage).IsAssignableFrom(type));
 
             foreach (var type in messageTypes)
             {

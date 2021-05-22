@@ -1,6 +1,6 @@
 ﻿namespace Morse.Abstractions.Models
 {
-    public abstract class MorseMessage
+    public interface IMorseMessage
     {
     }
 }

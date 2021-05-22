@@ -7,7 +7,7 @@ using RabbitMQ.Client;
 namespace Morse.RabbitMq
 {
     public class RabbitMqPublisher<TMessage> : IMorsePublisher<TMessage>
-        where TMessage : MorseMessage
+        where TMessage : IMorseMessage
     {
 
         private readonly IQueueBuilder<TMessage> queueBuilder;

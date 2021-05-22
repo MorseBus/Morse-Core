@@ -4,8 +4,7 @@ using Morse.Abstractions.Services;
 
 namespace Morse.Core.Services
 {
-    public class QueueBuilder<TMessage> : IQueueBuilder<TMessage>
-        where TMessage : MorseMessage
+    public class QueueBuilder<TMessage> : IQueueBuilder<TMessage> where TMessage : IMorseMessage
     {
         private readonly IConnectionSelector connectionSelector;
 
