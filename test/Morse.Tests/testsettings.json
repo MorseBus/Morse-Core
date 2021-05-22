@@ -5,8 +5,8 @@
         "Host": "localhost",
         "Port": 5672,
         "VirtualHost": "/",
-        "Username": "morse",
-        "Password": "morse",
+        "Username": "guest",
+        "Password": "guest",
         "Exchange": "morse.Test"
       }
     }

@@ -3,8 +3,7 @@ using Morse.Abstractions.Models;
 
 namespace Morse.Abstractions.Services
 {
-    public interface IMessageHandler<TMessage>
-        where TMessage : MorseMessage
+    public interface IMessageHandler<TMessage> where TMessage : IMorseMessage
     {
         Task HandleAsync(TMessage message);
     }
