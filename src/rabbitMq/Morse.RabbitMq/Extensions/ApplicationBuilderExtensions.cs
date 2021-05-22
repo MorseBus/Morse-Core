@@ -7,9 +7,10 @@ using Microsoft.AspNetCore.Builder;
 using Morse.Abstractions.Models;
 using Morse.Abstractions.Services;
 
-namespace Morse.RabbitMq.Extensions
+// ReSharper disable once CheckNamespace
+namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class ApplicationBuilder
+    public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder UseMorseRabbitMqConsumers(this IApplicationBuilder app, params Type[] messageAssemblyMarkerTypes)
         {
@@ -21,7 +22,7 @@ namespace Morse.RabbitMq.Extensions
         {
             var messageTypes = assembliesToScan
                 .SelectMany(a => a.GetExportedTypes())
-                .Where(type => !type.IsAbstract && typeof(IMorseMessage).IsAssignableFrom(type));
+                .Where(type => !type.IsAbstract && typeof(IQueueParameters).IsAssignableFrom(type));
 
             foreach (var type in messageTypes)
             {

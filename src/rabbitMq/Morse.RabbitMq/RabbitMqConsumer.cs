@@ -15,7 +15,7 @@ namespace Morse.RabbitMq
     ///TODO: 
     ///make the serializing configurable
     public class RabbitMqConsumer<TMessage> : IMorseConsumer<TMessage>
-        where TMessage : IMorseMessage
+        where TMessage : IQueueParameters
     {
         private readonly IQueueBuilder<TMessage> queueBuilder;
         private readonly IServiceProvider serviceProvider;
