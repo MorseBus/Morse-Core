@@ -1,14 +1,15 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Morse.Abstractions.Services;
 using Morse.Core.Options;
 using Morse.Core.Services;
+using Morse.RabbitMq;
 
-namespace Morse.RabbitMq.Extensions
+// ReSharper disable once CheckNamespace
+namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class MorseServiceCollectionService
+    public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddMorseRabbitMqPublisher(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddMorseRabbitMqPublishers(this IServiceCollection services, IConfiguration configuration)
         {
             return ConfigureRabbitMqServices(services, configuration);
         }

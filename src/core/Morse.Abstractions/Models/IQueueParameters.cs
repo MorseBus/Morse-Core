@@ -1,6 +1,6 @@
 ﻿namespace Morse.Abstractions.Models
 {
-    public interface IMorseMessage
+    public interface IQueueParameters
     {
     }
 }

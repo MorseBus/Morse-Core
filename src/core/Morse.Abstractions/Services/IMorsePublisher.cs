@@ -3,7 +3,7 @@ using Morse.Abstractions.Models;
 
 namespace Morse.Abstractions.Services
 {
-    public interface IMorsePublisher<TMessage> where TMessage : IMorseMessage
+    public interface IMorsePublisher<TMessage> where TMessage : IQueueParameters
     {
         void Publish(TMessage message);
     }

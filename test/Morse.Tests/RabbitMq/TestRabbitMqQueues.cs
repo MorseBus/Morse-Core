@@ -33,7 +33,7 @@ namespace Morse.Tests.RabbitMq
             base.ConfigureServices(services);
             services.AddTransient<IMessageHandler<MorseTestModel>, MorseTestModelHandler>();
 
-            services.AddMorseRabbitMqPublisher(Configuration);
+            services.AddMorseRabbitMqPublishers(Configuration);
             services.AddMorseRabbitMqConsumers(Configuration);
         }
 
